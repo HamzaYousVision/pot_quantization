@@ -3,8 +3,8 @@ from torchvision import transforms, datasets
 
 
 class DatasetLoader:
-    def __init__(self):
-        pass
+    def __init__(self, dataset_name):
+        self.dataset_name = dataset_name
 
     def load_cifar10_dataset(self):
         transform = transforms.Compose(
@@ -18,7 +18,7 @@ class DatasetLoader:
         )
         return dataset
 
-    def load_imagenet_dataset():
+    def load_imagenet_dataset(self):
         normalize = transforms.Normalize(
             mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
         )
@@ -30,6 +30,16 @@ class DatasetLoader:
                 normalize,
             ]
         )
-        data_path = os.join.path("data", "val")
+        data_path = os.path.join("data", "val")
         dataset = datasets.ImageFolder(data_path, transform)
+        return dataset
+
+    def load_dataset(self):
+        print(f"\n Loading {self.dataset_name} dataset ...")
+        if "cifar" in self.dataset_name.lower():
+            dataset = self.load_cifar10_dataset()
+        elif "imagenet" in self.dataset_name.lower():
+            dataset = self.load_imagenet_dataset()
+        print("\n dataset loaded")
+        print(100 * "-", "\n")
         return dataset

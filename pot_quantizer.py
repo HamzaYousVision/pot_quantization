@@ -14,10 +14,10 @@ class PotQuantizer:
         self.ir_model_bin = model_ir_files[1]
         self.dataset = dataset
 
-    def configure(self, device="CPU"):
+    def configure(self, model_name, device="CPU"):
         self.model_config = Dict(
             {
-                "model_name": "swin",
+                "model_name": model_name,
                 "model": self.ir_model_xml,
                 "weights": self.ir_model_bin,
             }

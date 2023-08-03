@@ -1,34 +1,62 @@
-from model_loader import SwinModelLoader
+import os
+import argparse
+
+from model_loader import SwinModelLoader, MobilenetV2ModelLoader
 from openv_vino_model_optimizer import OpenVinoModelOptimizer
 from dataset_loader import DatasetLoader
 from pot_quantizer import PotQuantizer
 
 
-def main():
-    #
-    model_loader = SwinModelLoader()
+def create_folders():
+    if not os.path.exists("model"):
+        os.makedirs("model")
+
+    if not os.path.exists("data"):
+        os.makedirs("data")
+
+
+def main(args):
+    # perepare folders
+    create_folders()
+
+    # define model
+    if "swin" in args.model_name.lower():
+        model_loader = SwinModelLoader(args.dataset_name)
+    elif "mobilenet" in args.model_name.lower():
+        model_loader = MobilenetV2ModelLoader(args.dataset_name)
     model = model_loader.load_load()
 
-    #
-    ov_model_optimizer = OpenVinoModelOptimizer(model)
+    # generate openvino IR
+    ov_model_optimizer = OpenVinoModelOptimizer(
+        model, args.model_name, args.dataset_name
+    )
     ov_model_optimizer.export_to_onnx()
     ov_model_optimizer.run_model_optimizer()
 
-    #
-    dataset_loader = DatasetLoader()
-    dataset = dataset_loader.load_imagenet_dataset()
+    # load dataset
+    dataset_loader = DatasetLoader(args.dataset_name)
+    dataset = dataset_loader.load_dataset()
 
-    #
+    # create and run openvino POT compression pipeline
     model_ir_files = ov_model_optimizer.get_model_ir_files()
     quantizer = PotQuantizer(model_ir_files, dataset)
-    quantizer.configure()
+    quantizer.configure(args.model_name)
     quantizer.create_pipeline()
     quantizer.run_pipeline()
 
-    #
+    # evaluate original/compressed models
     quantizer.evaluate_fp32_model()
     quantizer.evaluate_quantized_model()
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="POT Quantization Script")
+    parser.add_argument("--model_name", type=str, default="swin", help="model name")
+    parser.add_argument(
+        "--dataset_name", type=str, default="ImageNet", help="model name"
+    )
+    parser.add_argument("--a", action="store_true", help="")
+
+    args = parser.parse_args()
+
+    main(args)
