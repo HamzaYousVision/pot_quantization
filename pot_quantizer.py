@@ -14,10 +14,10 @@ class PotQuantizer:
         self.ir_model_bin = model_ir_files[1]
         self.dataset = dataset
 
-    def configure(self, model_name, device="CPU"):
+    def configure(self, args, device="CPU"):
         self.model_config = Dict(
             {
-                "model_name": model_name,
+                "model_name": args.model_name,
                 "model": self.ir_model_xml,
                 "weights": self.ir_model_bin,
             }
@@ -26,16 +26,18 @@ class PotQuantizer:
             {"device": device, "stat_requests_number": 2, "eval_requests_number": 2}
         )
         self.dataset_config = {"data_source": "data"}
-        self.algorithms = [
-            {
-                "name": "DefaultQuantization",
-                "params": {
-                    "target_device": device,
-                    "preset": "performance",
-                    "stat_subset_size": 300,
-                },
-            }
-        ]
+        self.configure_quantization_pipeline(args.exclude_MVN, device)
+
+    def configure_quantization_pipeline(self, exclude_MVN, device):
+        params = {
+            "target_device": device,
+            "preset": "performance",
+            "stat_subset_size": 300,
+        }
+        if exclude_MVN:
+            params.update({"model_type": "transformer"})
+
+        self.algorithms = [{"name": "DefaultQuantization", "params": params}]
 
     def create_pipeline(self):
         self.model = load_model(self.model_config)

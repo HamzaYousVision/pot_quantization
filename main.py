@@ -40,7 +40,7 @@ def main(args):
     # create and run openvino POT compression pipeline
     model_ir_files = ov_model_optimizer.get_model_ir_files()
     quantizer = PotQuantizer(model_ir_files, dataset)
-    quantizer.configure(args.model_name)
+    quantizer.configure(args)
     quantizer.create_pipeline()
     quantizer.run_pipeline()
     quantizer.compress_optimized_model()
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dataset_name", type=str, default="ImageNet", help="model name"
     )
-    parser.add_argument("--a", action="store_true", help="")
+    parser.add_argument("--exclude_MVN", action="store_true", help="")
 
     args = parser.parse_args()
 
