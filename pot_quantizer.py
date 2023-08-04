@@ -48,13 +48,13 @@ class PotQuantizer:
 
     def run_pipeline(self):
         print(f"\n running quantization ...")
-        self.model_quantizer = self.pipeline.run(self.model)
+        self.model_quantized = self.pipeline.run(self.model)
         print("\n Model quantized")
         print(100 * "-", "\n")
 
     def compress_optimized_model(self):
         print(f"\n compressing model weights ...")
-        compress_model_weights(self.model_quantizer)
+        compress_model_weights(self.model_quantized)
         print("\n Weight are compressed")
         print(100 * "-", "\n")
 
@@ -76,7 +76,7 @@ class PotQuantizer:
                 print(f"Accuracy of the original model: {name}: {value}")
 
     def evaluate_quantized_model(self):
-        metric_results = self.pipeline.evaluate(self.model_quantizer)
+        metric_results = self.pipeline.evaluate(self.model_quantized)
         if metric_results:
             for name, value in metric_results.items():
                 print(f"Accuracy of the optimized model: {name}: {value}")
