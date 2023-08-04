@@ -45,11 +45,27 @@ class PotQuantizer:
         self.pipeline = create_pipeline(self.algorithms, engine)
 
     def run_pipeline(self):
+        print(f"\n running quantization ...")
         self.model_quantizer = self.pipeline.run(self.model)
+        print("\n Model quantized")
+        print(100 * "-", "\n")
+
+    def compress_optimized_model(self):
+        print(f"\n compressing model weights ...")
         compress_model_weights(self.model_quantizer)
+        print("\n Weight are compressed")
+        print(100 * "-", "\n")
+
+    def save_optimized_model(self, model_name):
+        print(f"\n saveing model ...")
+        optimized_model_name = f"quantized_{model_name}"
         save_model(
-            model=self.model_quantizer, save_path="model", model_name="quantized_swin"
+            model=self.model_quantizer,
+            save_path="model",
+            model_name=optimized_model_name,
         )
+        print("\n Model saved")
+        print(100 * "-", "\n")
 
     def evaluate_fp32_model(self):
         metric_results = self.pipeline.evaluate(self.model)

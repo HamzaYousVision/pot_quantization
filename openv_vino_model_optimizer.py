@@ -45,4 +45,4 @@ class OpenVinoModelOptimizer:
     def get_model_ir_files(self):
         ir_model_xml = self.onnx_model_path.replace(".onnx", ".xml")
         ir_model_bin = self.onnx_model_path.replace(".onnx", ".bin")
-        return (ir_model_xml, ir_model_bin)
+        return ir_model_xml, ir_model_bin

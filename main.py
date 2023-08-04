@@ -43,6 +43,8 @@ def main(args):
     quantizer.configure(args.model_name)
     quantizer.create_pipeline()
     quantizer.run_pipeline()
+    quantizer.compress_optimized_model()
+    quantizer.save_optimized_model(args.model_name)
 
     # evaluate original/compressed models
     quantizer.evaluate_fp32_model()
