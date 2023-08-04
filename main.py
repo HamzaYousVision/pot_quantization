@@ -57,7 +57,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dataset_name", type=str, default="ImageNet", help="model name"
     )
-    parser.add_argument("--exclude_MVN", action="store_true", help="")
+    parser.add_argument(
+        "--exclude_MVN",
+        action="store_true",
+        help="Option to exclude LayerNorm from quantization",
+    )
 
     args = parser.parse_args()
 
