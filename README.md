@@ -18,7 +18,7 @@ The code expects that the dataset is organized in a particular hierarchy. Please
 
 ## Usage 
 To run the experiments, you need to run the main.py scripts. 
-The default configuration will run the quantization on Swin transformer model pretrained on imagenet, using the default POT configuration. 
+The default configuration will run the quantization on Swin transformer model pretrained on ImageNet, using the default POT configuration. 
 
 ```
 python main.py
