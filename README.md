@@ -1,7 +1,7 @@
 # OpenVino Post-training Optimization Demo
 
 
-This is a demo code that shows how to use OpenVino Post-training Quantization (POT) framework to optimize Deep Neural Network (DNN) by using the quantization technique. Swin transformer and MobilenetV2 models are considered in this demo. 
+This is a demo code that shows how to use OpenVino Post-training Quantization (POT) framework to optimize Deep Neural Networks (DNNs) by using the quantization technique. Swin transformer and MobilenetV2 models are considered in this demo. 
 
 ## Installation
 The code uses the openvino 2022.3.0 version and may not work with the newest versions. Please use the requirements.txt to install the dependencies
@@ -18,7 +18,7 @@ The code expects that the dataset is organized in a particular hierarchy. Please
 
 ## Usage 
 To run the experiments, you need to run the main.py scripts. 
-The default configuration will run the quantization on Swin transformer pretrained on imagenet model, using the default POT configuration. 
+The default configuration will run the quantization on Swin transformer model pretrained on imagenet, using the default POT configuration. 
 
 ```
 python main.py
