@@ -58,8 +58,8 @@ def main(args):
 
     model_ir_xml = model_ir_files[0]
     quantized_model_ir_xml, _ = quantizer.get_quantized_model_ir_files()
-    evaluator.evaluate_FPS(model_ir_xml, "original")
-    evaluator.evaluate_FPS(quantized_model_ir_xml, "quantized")
+    evaluator.evaluate_FPS(model_ir_xml)
+    evaluator.evaluate_FPS(quantized_model_ir_xml)
 
 
 if __name__ == "__main__":

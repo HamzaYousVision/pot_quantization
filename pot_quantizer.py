@@ -1,9 +1,9 @@
+import os
 from addict import Dict
 from openvino.tools.pot.engines.ie_engine import IEEngine
 from openvino.tools.pot.graph import load_model, save_model
 from openvino.tools.pot.graph.model_utils import compress_model_weights
 from openvino.tools.pot.pipeline.initializer import create_pipeline
-from openvino.runtime import Core
 
 from ov_utils import DataLoader, Accuracy
 
@@ -35,7 +35,7 @@ class PotQuantizer:
             "stat_subset_size": 300,
         }
         if exclude_MVN:
-            params.update({"model_type": "transformer"})
+            params["model_type"] = "transformer"
 
         self.algorithms = [{"name": "DefaultQuantization", "params": params}]
 
@@ -62,7 +62,7 @@ class PotQuantizer:
         print(f"\n saving model ...")
         self.optimized_model_name = f"quantized_{model_name}"
         save_model(
-            model=self.model_quantizer,
+            model=self.model_quantized,
             save_path="model",
             model_name=self.optimized_model_name,
         )
@@ -70,6 +70,6 @@ class PotQuantizer:
         print(100 * "-", "\n")
 
     def get_quantized_model_ir_files(self):
-        ir_model_xml = f"{self.optimized_model_name}.xml"
-        ir_model_bin = f"{self.optimized_model_name}.bin"
+        ir_model_xml = os.path.join("model", f"{self.optimized_model_name}.xml")
+        ir_model_bin = os.path.join("model", f"{self.optimized_model_name}.bin")
         return ir_model_xml, ir_model_bin

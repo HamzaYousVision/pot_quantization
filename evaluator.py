@@ -1,3 +1,4 @@
+import re
 import subprocess
 
 
@@ -14,7 +15,9 @@ class Evaluator:
         print(100 * "-", "\n")
 
     def evaluate_FPS(self, model_xml):
-        print(f"\n running accuracy evaluation of the {model_xml} model ...")
+        print(f"\n running FPS evaluation of the {model_xml} model ...")
         command = f"benchmark_app -m {model_xml} -d CPU -api async"
-        subprocess.check_output(command, shell=True)
+        cmd_output = subprocess.check_output(command, shell=True)
+        print("\n Benchmark report : ")
+        print(cmd_output)
         print(100 * "-", "\n")
