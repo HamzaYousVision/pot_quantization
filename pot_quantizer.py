@@ -59,24 +59,17 @@ class PotQuantizer:
         print(100 * "-", "\n")
 
     def save_optimized_model(self, model_name):
-        print(f"\n saveing model ...")
-        optimized_model_name = f"quantized_{model_name}"
+        print(f"\n saving model ...")
+        self.optimized_model_name = f"quantized_{model_name}"
         save_model(
             model=self.model_quantizer,
             save_path="model",
-            model_name=optimized_model_name,
+            model_name=self.optimized_model_name,
         )
         print("\n Model saved")
         print(100 * "-", "\n")
 
-    def evaluate_fp32_model(self):
-        metric_results = self.pipeline.evaluate(self.model)
-        if metric_results:
-            for name, value in metric_results.items():
-                print(f"Accuracy of the original model: {name}: {value}")
-
-    def evaluate_quantized_model(self):
-        metric_results = self.pipeline.evaluate(self.model_quantized)
-        if metric_results:
-            for name, value in metric_results.items():
-                print(f"Accuracy of the optimized model: {name}: {value}")
+    def get_quantized_model_ir_files(self):
+        ir_model_xml = f"{self.optimized_model_name}.xml"
+        ir_model_bin = f"{self.optimized_model_name}.bin"
+        return ir_model_xml, ir_model_bin

@@ -5,6 +5,7 @@ from model_loader import SwinModelLoader, MobilenetV2ModelLoader
 from ov_model_optimizer import OpenVinoModelOptimizer
 from dataset_loader import DatasetLoader
 from pot_quantizer import PotQuantizer
+from evaluator import Evaluator
 
 
 def create_folders():
@@ -47,8 +48,18 @@ def main(args):
     quantizer.save_optimized_model(args.model_name)
 
     # evaluate original/compressed models
-    quantizer.evaluate_fp32_model()
-    quantizer.evaluate_quantized_model()
+    pipeline = quantizer.pipeline
+    fp32_model = quantizer.model
+    quantized_model = quantizer.model_quantized
+    evaluator = Evaluator(pipeline)
+
+    evaluator.evaluate_accuracy(fp32_model, "original")
+    evaluator.evaluate_accuracy(quantized_model, "quantized")
+
+    model_ir_xml = model_ir_files[0]
+    quantized_model_ir_xml, _ = quantizer.get_quantized_model_ir_files()
+    evaluator.evaluate_FPS(model_ir_xml, "original")
+    evaluator.evaluate_FPS(quantized_model_ir_xml, "quantized")
 
 
 if __name__ == "__main__":
