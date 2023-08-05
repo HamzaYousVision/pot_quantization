@@ -2,7 +2,7 @@ import os
 import argparse
 
 from model_loader import SwinModelLoader, MobilenetV2ModelLoader
-from openv_vino_model_optimizer import OpenVinoModelOptimizer
+from ov_model_optimizer import OpenVinoModelOptimizer
 from dataset_loader import DatasetLoader
 from pot_quantizer import PotQuantizer
 
