@@ -49,10 +49,10 @@ def main(args):
 
     # evaluate original/compressed models
     pipeline = quantizer.pipeline
-    fp32_model = quantizer.model
-    quantized_model = quantizer.model_quantized
     evaluator = Evaluator(pipeline)
 
+    fp32_model = quantizer.model
+    quantized_model = quantizer.model_quantized
     evaluator.evaluate_accuracy(fp32_model, "original")
     evaluator.evaluate_accuracy(quantized_model, "quantized")
 
