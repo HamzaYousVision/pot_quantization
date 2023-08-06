@@ -12,19 +12,19 @@ pip install -r requirements.txt
 
 
 ## Requirements
-In order the run the experiments using the models pretrained on ImageNet, validation data need to be downloaded and placed in ```data/val```. Note that the data folder is created when you run the main script for the first time.
+In order the run the experiments using the models pre-trained on ImageNet, validation data need to be downloaded and placed in ```data/val```. Note that the data folder is created when you run the main script for the first time.
 
 The code expects that the dataset is organized in a particular hierarchy. Please refer to this repo  https://gist.github.com/antoinebrl/7d00d5cb6c95ef194c737392ef7e476a. 
 
 ## Usage 
-To run the experiments, you need to run the main.py scripts. 
+To run the experiments, you need to run the main.py script. 
 The default configuration will run the quantization on Swin transformer model pretrained on ImageNet, using the default POT configuration. 
 
 ```
 python main.py
 ```
 
-To run the experiment by exclusing LayerNorm layer from quantization, please run: 
+To run the experiment by excluding LayerNorm layer from quantization, please run: 
 
 ```
 python main.py --exclude_MVN 
